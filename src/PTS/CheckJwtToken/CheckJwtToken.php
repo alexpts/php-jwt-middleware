@@ -37,7 +37,7 @@ class CheckJwtToken implements MiddlewareInterface
      *
      * @return $this
      */
-    public function checkIp(bool $checkIp): self
+    public function setCheckIp(bool $checkIp): self
     {
         $this->checkIp = $checkIp;
         return $this;
