@@ -141,7 +141,7 @@ class CheckJwtToken implements MiddlewareInterface
     protected function getTokenFromBearerHeader(ServerRequestInterface $request): ?string
     {
         $header = $request->getHeader('Authorization');
-        [$type, $value] = explode(' ', $header[0]);
+        list($type, $value) = explode(' ', $header[0]);
 
         return $type === 'Bearer' ? $value : null;
     }
