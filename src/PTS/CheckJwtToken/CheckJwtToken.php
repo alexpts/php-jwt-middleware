@@ -112,13 +112,18 @@ class CheckJwtToken implements MiddlewareInterface
     protected function checkTokenIp(Token $token, string $clientIp = null): void
     {
         if ($this->checkIp) {
-            $tokenIp = $token->getPayload()->findClaimByName('ip');
-            $tokenIp = $tokenIp !== null ? $tokenIp->getValue() : null;
+            $tokenIp = $this->getIpFromToken($token);
 
             if ($tokenIp && $clientIp !== $tokenIp) {
                 throw new TokenException('Token not valid for this ip');
             }
         }
+    }
+
+    protected function getIpFromToken(Token $token): ?string
+    {
+        $tokenIp = $token->getPayload()->findClaimByName('ip');
+        return $tokenIp !== null ? $tokenIp->getValue() : null;
     }
 
     /**
