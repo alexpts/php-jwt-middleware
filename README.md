@@ -9,3 +9,4 @@
 
 #### Install
 ```composer require alexpts/php-jwt-middleware```
+
