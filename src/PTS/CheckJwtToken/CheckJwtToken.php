@@ -32,24 +32,44 @@ class CheckJwtToken implements MiddlewareInterface
         $this->jwtService = $jwtService;
     }
 
+    /**
+     * @param bool $checkIp
+     *
+     * @return $this
+     */
     public function checkIp(bool $checkIp): self
     {
         $this->checkIp = $checkIp;
         return $this;
     }
 
+    /**
+     * @param string $cookieName
+     *
+     * @return $this
+     */
     public function setCookieName(string $cookieName): self
     {
         $this->cookieName = $cookieName;
         return $this;
     }
 
+    /**
+     * @param string $attr
+     *
+     * @return $this
+     */
     public function setIpAttr(string $attr): self
     {
         $this->ipAttr = $attr;
         return $this;
     }
 
+    /**
+     * @param string $attr
+     *
+     * @return $this
+     */
     public function setTokenAttr(string $attr): self
     {
         $this->tokenAttr = $attr;
@@ -101,6 +121,11 @@ class CheckJwtToken implements MiddlewareInterface
         }
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return null|string
+     */
     protected function getTokenFromRequest(ServerRequestInterface $request): ?string
     {
         return $request->hasHeader('Authorization')
@@ -108,6 +133,11 @@ class CheckJwtToken implements MiddlewareInterface
             : $this->getTokenFromCookie($request);
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return null|string
+     */
     protected function getTokenFromBearerHeader(ServerRequestInterface $request): ?string
     {
         $header = $request->getHeader('Authorization');
@@ -124,7 +154,7 @@ class CheckJwtToken implements MiddlewareInterface
     protected function getTokenFromCookie(ServerRequestInterface $request): ?string
     {
         $clientIp = $request->getAttribute($this->ipAttr);
-        $cookieName = $clientIp ? $this->cookieName . '_' . $clientIp : $this->cookieName;
+        $cookieName = $clientIp ? $this->cookieName.'_'.$clientIp : $this->cookieName;
 
         return $request->getCookieParams()[$cookieName] ?? null;
     }
