@@ -23,6 +23,8 @@ class CheckJwtToken implements MiddlewareInterface
     protected $jwtService;
     /** @var bool */
     protected $checkIp = true;
+    /** @var bool */
+    protected $cookieNameWithIp = true;
 
     /**
      * @param JwtService $jwtService
@@ -51,6 +53,17 @@ class CheckJwtToken implements MiddlewareInterface
     public function setCookieName(string $cookieName): self
     {
         $this->cookieName = $cookieName;
+        return $this;
+    }
+
+    /**
+     * @param bool $cookieNameWithIp
+     *
+     * @return $this
+     */
+    public function setCookieNameWithIp(bool $cookieNameWithIp): self
+    {
+        $this->cookieNameWithIp = $cookieNameWithIp;
         return $this;
     }
 
@@ -158,9 +171,18 @@ class CheckJwtToken implements MiddlewareInterface
      */
     protected function getTokenFromCookie(ServerRequestInterface $request): ?string
     {
-        $clientIp = $request->getAttribute($this->ipAttr);
-        $cookieName = $clientIp ? $this->cookieName.'_'.$clientIp : $this->cookieName;
+        $cookiesData = $request->getCookieParams();
+        $cookieName = $this->getCookieName($request);
 
-        return $request->getCookieParams()[$cookieName] ?? null;
+        return $cookiesData[$cookieName] ??  null;
+    }
+
+    protected function getCookieName(ServerRequestInterface $request): string
+    {
+        if (!$this->cookieNameWithIp) {
+            return $this->cookieName;
+        }
+
+        return $this->cookieName.'_'.$request->getAttribute($this->ipAttr);
     }
 }

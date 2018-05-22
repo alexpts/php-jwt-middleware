@@ -38,7 +38,7 @@ class GetTokenFromCookieTest extends TestCase
         return [
             [null, null, []],
             [null, '127.0.0.1', []],
-            ['aaa', null, ['auth_token' => 'aaa']],
+            ['aaa', null, ['auth_token_' => 'aaa']],
             ['bbb', '127.0.0.1', ['auth_token_127.0.0.1' => 'bbb']],
             [null, '127.0.0.1', ['auth_token_127.1.1.1' => 'ccc']],
         ];
