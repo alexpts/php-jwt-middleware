@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use PTS\CheckJwtToken\CheckJwtToken;
 
+/**
+ * @covers \PTS\CheckJwtToken\CheckJwtToken::getTokenFromBearerHeader()
+ */
 class GetTokenFromBearerHeaderTest extends TestCase
 {
     /**
